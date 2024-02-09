@@ -1,5 +1,8 @@
 package ru.otus.java.basic.http.server;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -8,6 +11,8 @@ public class HttpRequest {
     private String uri;
     private HttpMethod method;
     private Map<String, String> parameters;
+
+    private static final Logger logger = LogManager.getLogger(HttpRequest.class.getName());
 
     public String getUri() {
         return uri;
@@ -18,11 +23,13 @@ public class HttpRequest {
     }
 
     public HttpRequest(String rawRequest) {
+        logger.info("Получили запрос: \"" + rawRequest + "\"");
         this.rawRequest = rawRequest;
         parseRequestLine();
     }
 
     private void parseRequestLine() {
+        logger.info("Пытаемся распарсить запрос");
         int startIndex = rawRequest.indexOf(' ');
         int endIndex = rawRequest.indexOf(' ', startIndex + 1);
         this.uri = rawRequest.substring(startIndex + 1, endIndex);
